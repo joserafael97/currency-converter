@@ -5,10 +5,10 @@ on:
   # but only for the main branch
   push:
     branches:
-      - main
+      - workflow-heroku
   pull_request:
     branches:
-      - main
+      - workflow-heroku
 jobs:
   deploy-currency-converter:
     runs-on: ubuntu-latest
