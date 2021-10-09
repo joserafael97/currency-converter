@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+   postgres-catalog:
+      container_name: postgres-currency-converter
+      image: postgres:9.6.16
+      restart: always
+      command: -p 5441
+      ports:
+         - 5441:5441
+      environment:
+         - POSTGRES_PASSWORD=4b28121d3c291f5c2b561ddc3e999cf589ddbe6472e202edf058106d069fc74e
+         - POSTGRES_USER=currencyconverter87%w2
+         - POSTGRES_DB=currencyconverter
+      expose:
+         - 5441
+      networks:
+         - currency-converter-production-network
+
+   catalog:
+      container_name: currency-converter
+      build:
+         args:
+            - PORT=9999
+            - SPRING_PROFILES_ACTIVE=prod
+            - MEMORY_USE=
+         dockerfile: ./Dockerfile
+         context: ./currency-converter-api
+      image: currency-converter
+      restart: always
+      environment:
+         - POSTGRESQL_HOST=postgres-catalog
+         - SPRING_DATASOURCE_USERNAME=cataloguser87%w2
+         - SPRING_DATASOURCE_PASSWORD=4b28121d3c291f5c2b561ddc3e999cf589ddbe6472e202edf058106d069fc74e
+         - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-currency-converter:5441/currencyconverter
+         - WAIT_HOSTS=postgres-catalog:5441
+         - SPRING_PROFILES_ACTIVE=prod
+         - PORT=9999
+      ports:
+         - "9999:9999"
+      expose:
+         - 9999
+      networks:
+         - currency-converter-production-network
+      depends_on:
+         - currency-converter-catalog
+
+networks:
+   currency-converter-production-network:
+      driver: bridge
+
