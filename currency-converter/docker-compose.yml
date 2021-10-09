@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-   postgres-catalog:
+   postgres-currency-converter:
       container_name: postgres-currency-converter
       image: postgres:9.6.16
       restart: always
@@ -29,11 +29,11 @@ services:
       image: currency-converter
       restart: always
       environment:
-         - POSTGRESQL_HOST=postgres-catalog
-         - SPRING_DATASOURCE_USERNAME=cataloguser87%w2
+         - POSTGRESQL_HOST=postgres-currency-converter
+         - SPRING_DATASOURCE_USERNAME=currencyconverter87%w2
          - SPRING_DATASOURCE_PASSWORD=4b28121d3c291f5c2b561ddc3e999cf589ddbe6472e202edf058106d069fc74e
          - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-currency-converter:5441/currencyconverter
-         - WAIT_HOSTS=postgres-catalog:5441
+         - WAIT_HOSTS=postgres-currency-converter:5441
          - SPRING_PROFILES_ACTIVE=prod
          - PORT=9999
       ports:
@@ -43,7 +43,7 @@ services:
       networks:
          - currency-converter-production-network
       depends_on:
-         - currency-converter-catalog
+         - postgres-currency-converter
 
 networks:
    currency-converter-production-network:
