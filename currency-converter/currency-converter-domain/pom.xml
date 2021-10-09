@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>currency-converter-model</artifactId>
+    <artifactId>currency-converter-domain</artifactId>
 
     <properties>
         <java.version>1.8</java.version>
