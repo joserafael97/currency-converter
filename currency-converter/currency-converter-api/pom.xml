@@ -119,7 +119,7 @@
         </dependency>
         <dependency>
             <groupId>br.com.jrafael</groupId>
-            <artifactId>currency-converter-model</artifactId>
+            <artifactId>currency-converter-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
 
