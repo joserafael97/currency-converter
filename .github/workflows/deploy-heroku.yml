@@ -1,0 +1,41 @@
+name: deploy-heroku
+on:
+  workflow_dispatch:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  deploy-currency-converter:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v1
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Build with Maven
+      working-directory: ./common/
+      run: mvn -B package  -Dmaven.test.skip=true --file pom.xml
+    - name: Build with Maven Currency Converter
+      working-directory: ./currency-converter/
+      run: mvn -B package  -Dmaven.test.skip=true --file pom.xml
+    - name: Heroku Container Registry login
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: heroku container:login
+    - name: Build and push
+      working-directory: ./catalog/currency-converter-api/
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
+    - name: Release
+      working-directory: ./currency-converter/currency-converter-api/
+      env:
+       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
