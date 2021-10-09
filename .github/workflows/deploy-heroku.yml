@@ -30,7 +30,7 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:login
     - name: Build and push
-      working-directory: ./catalog/currency-converter-api/
+      working-directory: ./currency-converter/currency-converter-api/
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
