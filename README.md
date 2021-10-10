@@ -1,8 +1,8 @@
 # Conversor de Moedas
 
-Este projeto está disponível no [Todo name](linkurl) e a documentação via Swagger está disponível em [swagger](urllink).
+Este projeto está disponível no [https://currency-converter-app01.herokuapp.com](https://currency-converter-app01.herokuapp.com) e a documentação via Swagger está disponível em [https://currency-converter-app01.herokuapp.com/swagger-ui/](https://currency-converter-app01.herokuapp.com/swagger-ui/).
 
-O Deploy foi feito via Github Actions [heroku-deploy](workflowsLink) com base na branch [heroku-deploy](linkbranch)
+O Deploy foi feito via Github Actions [deploy-heroku.yml](https://github.com/joserafael97/currency-converter/blob/workflow-heroku/.github/workflows/deploy-heroku.yml) com base na branch [workflow-heroku](https://github.com/joserafael97/currency-converter/tree/workflow-heroku)
 
 ## Módulos do Projeto
 
@@ -16,16 +16,16 @@ Módulo que contém código utilitários para Controllers, repositórios e valid
 Módulo com utilitários para adicionar camada segurança eme aplicações com o Spring security.
 
 ## 2. Currency-converter
-Módulo principal do projeto com todas regras as negócio para catálogos de produtos.
+Módulo principal do projeto com todas regras as negócio para conversor de moedas.
 
-### 2.1 Currency-converter-Model
+### 2.1 Currency-converter-domain
 Módulo contendo regra de negócio.
 
-### 2.2 Currency-converter-Repository
+### 2.2 Currency-converter-persistence
 Módulo contendo infraestrutura para acesso e gerenciamento da persistência.
 
 ### 2.3 Currency-converter-Api
-Módulo contendo código para execução da aplicação principal do projeto relacionados ao catalog.
+Módulo contendo código para execução da aplicação principal do projeto relacionados ao Currency-converter.
 
 ## Ambiente de Desenvolvimento
 
@@ -33,7 +33,7 @@ O projeto Currency-converter server utiliza os seguintes componentes:
 
 - Spring boot 2.5.3
 
-O projeto Catalog utiliza o [apache maven](https://maven.apache.org/) como gerenciador de pacotes. Assim, para gerar o pacote de desenvolvimento é necessário executar o seguinte comando:
+O projeto Currency-converter utiliza o [apache maven](https://maven.apache.org/) como gerenciador de pacotes. Assim, para gerar o pacote de desenvolvimento é necessário executar o seguinte comando:
 
 ```
 mvn clean package
@@ -82,7 +82,7 @@ usuário: pguser
 senha: secret
 schema: test
 ```
-Observe que a única diferença com o perfil dev é o schema do banco de dados. Para alterações nessas configurações o arquivo **testrec-server/src/main/resources/application-test.properties** deve ser alterado.
+Observe que a única diferença com o perfil dev é o schema do banco de dados. Para alterações nessas configurações o arquivo **currency-converter/src/main/resources/application-test.properties** deve ser alterado.
 
 ### O perfil de execução prod
 O perfil test por padrão acessa o banco de dados utilizando a seguinte configuração:
