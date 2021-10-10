@@ -11,7 +11,7 @@
     <modules>
         <module>../common</module>
         <module>currency-converter-domain</module>
-        <module>currency-converter-repository</module>
+        <module>currency-converter-persistence</module>
         <module>currency-converter-api</module>
     </modules>
 

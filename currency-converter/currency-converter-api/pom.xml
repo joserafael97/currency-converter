@@ -125,7 +125,7 @@
 
         <dependency>
             <groupId>br.com.jrafael</groupId>
-            <artifactId>currency-converter-repository</artifactId>
+            <artifactId>currency-converter-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
