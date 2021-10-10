@@ -4,14 +4,15 @@ import br.com.jrafael.currencyconverter.domain.constants.FinanceCoins;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class CurrencyTransaction {
+
+    private Long id;
     private String userId;
     private FinanceCoins currencyOrigin;
     private BigDecimal sourceValue;
     private FinanceCoins destinationCurrency;
-    private Map<String, BigDecimal> conversionRate;
+//    private Map<String, BigDecimal> conversionRate;
     private LocalDateTime date;
 
     public String getUserId() {
@@ -46,13 +47,13 @@ public class CurrencyTransaction {
         this.destinationCurrency = destinationCurrency;
     }
 
-    public Map<String, BigDecimal> getConversionRate() {
-        return conversionRate;
-    }
-
-    public void setConversionRate(Map<String, BigDecimal> conversionRate) {
-        this.conversionRate = conversionRate;
-    }
+//    public Map<String, BigDecimal> getConversionRate() {
+//        return conversionRate;
+//    }
+//
+//    public void setConversionRate(Map<String, BigDecimal> conversionRate) {
+//        this.conversionRate = conversionRate;
+//    }
 
     public LocalDateTime getDate() {
         return date;
@@ -60,5 +61,13 @@ public class CurrencyTransaction {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
