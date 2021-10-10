@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerAppConfiguration extends SwaggerConfiguration {
 
     public SwaggerAppConfiguration(){
-        this.projectPackage = "br.com.jrafael.currency-converter.api.controller";
+        this.projectPackage = "br.com.jrafael.currencyconverter.api.controller";
         this.titleApplication = "Currency Converter";
     }
 }
