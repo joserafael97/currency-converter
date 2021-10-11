@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ExchangeRateApi extends FinanceCurrencyConverterServicePort {
 
     @GetMapping("/latest?access_key={access_key}&base={base}&symbols={coins}")
-    CurrencyTransactionRateDto getCurrencyTransactionRate(@PathVariable("base") String base,
-                                                          @PathVariable("coins") String[] coins,
-                                                          @PathVariable("access_key") String accessKey);
+    CurrencyTransactionRateDto getCurrencyTransactionRate(
+            @PathVariable("base") String base,
+            @PathVariable("coins") String[] coins,
+            @PathVariable("access_key") String accessKey);
 }
