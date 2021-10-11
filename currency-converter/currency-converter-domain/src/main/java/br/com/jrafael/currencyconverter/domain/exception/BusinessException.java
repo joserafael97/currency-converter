@@ -1,6 +1,8 @@
 package br.com.jrafael.currencyconverter.domain.exception;
 
-public class BusinessException extends Exception {
+import br.com.jrafael.infrastructure.exception.GenericBusinessException;
+
+public class BusinessException extends GenericBusinessException {
     public BusinessException(String mensagem) {
         super(mensagem);
     }

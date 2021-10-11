@@ -1,9 +1,11 @@
 package br.com.jrafael.currencyconverter.domain.service;
 
 import br.com.jrafael.currencyconverter.domain.dto.CurrencyTransactionRateDto;
+import br.com.jrafael.currencyconverter.domain.exception.BusinessValidationException;
 import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.port.persistence.CurrencyTransactionPersistencePort;
 import br.com.jrafael.currencyconverter.domain.port.service.FinanceCurrencyConverterServicePort;
+import br.com.jrafael.currencyconverter.domain.util.validation.init.CurrencyTransactionAtributesValidation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,9 +20,9 @@ public class CurrencyTransactionService {
         this.financeCurrencyConverterServicePort = financeCurrencyConverterServicePort;
     }
 
-    public CurrencyTransaction create(CurrencyTransaction model){
+    public CurrencyTransaction create(CurrencyTransaction model) throws BusinessValidationException {
+        CurrencyTransactionAtributesValidation.validate(model);
         String[] coins = new String[]{model.getDestinationCurrency().getEnumAbbreviation()};
-        model.setUserId("b28899a2fb24d70952c5d8ee2aa2006e");
         CurrencyTransactionRateDto rateDto = this.financeCurrencyConverterServicePort
                 .getCurrencyTransactionRate(
                         "EUR",
@@ -28,9 +30,7 @@ public class CurrencyTransactionService {
                         model.getUserId());
         model.setConversionRate(rateDto.getRates().get(model.getDestinationCurrency().getEnumAbbreviation()));
         model.setDate(rateDto.getTimestamp());
-        if(model != null) {
-            model = this.currencyTransactionPersistencePort.create(model);
-        }
+        model = this.currencyTransactionPersistencePort.create(model);
         return model;
     }
 
