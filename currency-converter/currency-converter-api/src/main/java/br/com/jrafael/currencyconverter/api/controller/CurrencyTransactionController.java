@@ -2,9 +2,9 @@ package br.com.jrafael.currencyconverter.api.controller;
 
 import br.com.jrafael.currencyconverter.api.dto.CurrencyTransactionDto;
 import br.com.jrafael.currencyconverter.api.dto.CurrencyTransactionFormDto;
+import br.com.jrafael.currencyconverter.domain.exception.BusinessException;
 import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.service.CurrencyTransactionService;
-import br.com.jrafael.infrastructure.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@RestController("transactions")
+@RestController("/transactions")
 public class CurrencyTransactionController {
 
     protected static final String PAGE_NUMBER_PARAM = "page";
@@ -31,7 +31,6 @@ public class CurrencyTransactionController {
     public CurrencyTransactionController(final CurrencyTransactionService currencyTransactionService) {
         this.currencyTransactionService = currencyTransactionService;
     }
-
 
     @PostMapping
     @Transactional

@@ -3,16 +3,20 @@ package br.com.jrafael.currencyconverter.domain.model;
 import br.com.jrafael.currencyconverter.domain.constants.FinanceCoins;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class CurrencyTransaction {
 
-    private Long id;
+    private String id;
     private String userId;
-    private FinanceCoins currencyOrigin;
+    private FinanceCoins currencyOrigin = FinanceCoins.EUR;
     private BigDecimal sourceValue;
+    private BigDecimal convertedValue;
     private FinanceCoins destinationCurrency;
-//    private Map<String, BigDecimal> conversionRate;
+    private BigDecimal conversionRate;
     private LocalDateTime date;
 
     public String getUserId() {
@@ -47,14 +51,6 @@ public class CurrencyTransaction {
         this.destinationCurrency = destinationCurrency;
     }
 
-//    public Map<String, BigDecimal> getConversionRate() {
-//        return conversionRate;
-//    }
-//
-//    public void setConversionRate(Map<String, BigDecimal> conversionRate) {
-//        this.conversionRate = conversionRate;
-//    }
-
     public LocalDateTime getDate() {
         return date;
     }
@@ -63,11 +59,47 @@ public class CurrencyTransaction {
         this.date = date;
     }
 
-    public Long getId() {
+    public void setDate(String timestamp) {
+        this.date = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(timestamp) * 1000), ZoneId.of("UTC"));
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public BigDecimal getConversionRate() {
+        return conversionRate;
+    }
+
+    public void setConversionRate(BigDecimal conversionRate) {
+        this.conversionRate = conversionRate;
+        this.getConvertedValue();
+    }
+
+    public BigDecimal getConvertedValue() {
+        this.convertedValue = BigDecimal.ZERO;
+        if (this.getSourceValue() != null && this.getConversionRate() != null) {
+            this.convertedValue = (this.getSourceValue().multiply(this.getConversionRate()))
+                    .setScale(2, RoundingMode.HALF_EVEN);
+        }
+        return this.convertedValue;
+    }
+
+    @Override
+    public String toString() {
+        return "CurrencyTransaction{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", currencyOrigin=" + currencyOrigin +
+                ", sourceValue=" + sourceValue +
+                ", convertedValue=" + convertedValue +
+                ", destinationCurrency=" + destinationCurrency +
+                ", conversionRate=" + conversionRate +
+                ", date=" + date +
+                '}';
     }
 }

@@ -1,22 +1,16 @@
 package br.com.jrafael.currencyconverter.persistence.model;
 
 import br.com.jrafael.currencyconverter.domain.constants.FinanceCoins;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 @Entity
 @Table(name = "CURRENCYTRANSACTION")
@@ -24,12 +18,22 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class CurrencyTransactionEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GeneratedValue(generator = "UUIDGenerator")
+    @Column(updatable = false, nullable = false, unique = true)
+    private String id;
+
     private String userId;
+
     private FinanceCoins currencyOrigin;
+
+    @Column(precision = 16, scale = 6)
     private BigDecimal sourceValue;
+
     private FinanceCoins destinationCurrency;
-//    private Map<String, BigDecimal> conversionRate;
+
+    @Column(precision = 16, scale = 6)
+    private BigDecimal conversionRate;
+
     private LocalDateTime date;
 }
