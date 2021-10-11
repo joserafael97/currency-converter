@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @Getter
@@ -18,14 +17,14 @@ import java.util.Map;
 @NoArgsConstructor
 public class CurrencyTransactionDto extends BaseDto<CurrencyTransaction> {
 
-    private Long id;
+    private String id;
     private String userId;
     private FinanceCoins currencyOrigin;
     private BigDecimal sourceValue;
     private FinanceCoins destinationCurrency;
-    private Map<String, BigDecimal> conversionRate;
     private LocalDateTime date;
-
+    private BigDecimal conversionRate;
+    private BigDecimal convertedValue;
 
     public CurrencyTransactionDto(CurrencyTransaction currencyTransaction){
         this.id = currencyTransaction.getId();
@@ -33,8 +32,9 @@ public class CurrencyTransactionDto extends BaseDto<CurrencyTransaction> {
         this.currencyOrigin = currencyTransaction.getCurrencyOrigin();
         this.sourceValue = currencyTransaction.getSourceValue();
         this.destinationCurrency = currencyTransaction.getDestinationCurrency();
-//        this.conversionRate = currencyTransaction.getConversionRate();
+        this.conversionRate = currencyTransaction.getConversionRate();
         this.date = currencyTransaction.getDate();
+        this.convertedValue = currencyTransaction.getConvertedValue();
     }
 
     @Override
@@ -46,6 +46,8 @@ public class CurrencyTransactionDto extends BaseDto<CurrencyTransaction> {
         obj.setDestinationCurrency(this.destinationCurrency);
         obj.setDate(this.date);
         obj.setSourceValue(this.sourceValue);
+        obj.setConversionRate(this.conversionRate);
         return obj;
     }
+
 }

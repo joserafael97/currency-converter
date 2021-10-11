@@ -1,7 +1,7 @@
 package br.com.jrafael.infrastructure.controller;
 
 import br.com.jrafael.infrastructure.dto.BaseDto;
-import br.com.jrafael.infrastructure.exception.BusinessException;
+import br.com.jrafael.infrastructure.exception.GenericBusinessException;
 import br.com.jrafael.infrastructure.repository.AbstractRepository;
 import br.com.jrafael.infrastructure.util.MyBeansUtil;
 import br.com.jrafael.infrastructure.util.NullAwareBeanUtils;
@@ -68,14 +68,14 @@ public abstract class CrudController<T, K extends BaseDto<T>, F extends BaseDto<
 
     @PostMapping
     @Transactional
-    public ResponseEntity<K> post(@RequestBody @Valid F form) throws BusinessException {
+    public ResponseEntity<K> post(@RequestBody @Valid F form) throws GenericBusinessException {
         T entity = this.repository.save(form.convert());
         return ResponseEntity.ok(this.convert(entity));
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<K> put(@PathVariable ID id, @RequestBody @Valid F form) throws BusinessException {
+    public ResponseEntity<K> put(@PathVariable ID id, @RequestBody @Valid F form) throws GenericBusinessException {
         Optional<T> optional = this.repository.findById(id);
 
         if (optional.isPresent()) {
@@ -91,7 +91,7 @@ public abstract class CrudController<T, K extends BaseDto<T>, F extends BaseDto<
 
     @PatchMapping("/{id}")
     @Transactional
-    public ResponseEntity<K> patch(@PathVariable ID id, @RequestBody K form) throws BusinessException {
+    public ResponseEntity<K> patch(@PathVariable ID id, @RequestBody K form) throws GenericBusinessException {
         Optional<T> optional = this.repository.findById(id);
 
         if (optional.isPresent()) {
@@ -110,7 +110,7 @@ public abstract class CrudController<T, K extends BaseDto<T>, F extends BaseDto<
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable ID id) throws BusinessException {
+    public ResponseEntity<?> delete(@PathVariable ID id) throws GenericBusinessException {
         Optional<T> optional = this.repository.findById(id);
         if (optional.isPresent()) {
             this.repository.deleteById(id);

@@ -1,9 +1,11 @@
 package br.com.jrafael.infrastructure.handler;
 
-import br.com.jrafael.infrastructure.exception.BusinessException;
+import br.com.jrafael.infrastructure.exception.GenericBusinessException;
+import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +38,28 @@ public class RestExceptionHandler {
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(GenericBusinessException.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public ResponseEntity<String> handleBusinessErrors(HttpServletRequest req, BusinessException be) {
+    public ResponseEntity<String> handleBusinessErrors(HttpServletRequest req, GenericBusinessException be) {
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(be.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 
+        return responseEntity;
+    }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ResponseBody
+    public ResponseEntity<String> handleDataIntegrityViolationException(HttpServletRequest req, DataIntegrityViolationException be) {
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(be.getMessage(), HttpStatus.CONFLICT);
+        return responseEntity;
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<String> handleFeignStatusException(FeignException e, HttpServletResponse response) {
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(e.contentUTF8(), HttpStatus.resolve(e.status()));
         return responseEntity;
     }
 

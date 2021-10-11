@@ -1,6 +1,7 @@
 package br.com.jrafael.currencyconverter.domain.constants;
 
 import br.com.jrafael.currencyconverter.domain.exception.BusinessException;
+import br.com.jrafael.currencyconverter.domain.exception.BusinessValidationException;
 
 public enum FinanceCoins {
 
@@ -18,13 +19,13 @@ public enum FinanceCoins {
     }
 
 
-    public static FinanceCoins getByCode(String code) throws BusinessException {
+    public static FinanceCoins getByCode(String code) throws BusinessValidationException {
         for (FinanceCoins enumTipo : FinanceCoins.values()) {
             if (enumTipo.getEnumAbbreviation().equals(code)) {
                 return enumTipo;
             }
         }
-        throw new BusinessException("Invalid coin.");
+        throw new BusinessValidationException("Invalid finance coin.");
     }
     
     public String getDescription() {
