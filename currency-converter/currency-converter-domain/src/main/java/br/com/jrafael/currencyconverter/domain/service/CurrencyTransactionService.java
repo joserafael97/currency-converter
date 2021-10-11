@@ -25,7 +25,7 @@ public class CurrencyTransactionService {
         String[] coins = new String[]{model.getDestinationCurrency().getEnumAbbreviation()};
         CurrencyTransactionRateDto rateDto = this.financeCurrencyConverterServicePort
                 .getCurrencyTransactionRate(
-                        "EUR",
+                        model.getCurrencyOrigin().getEnumAbbreviation(),
                         coins,
                         model.getUserId()).getBody();
         model.setConversionRate(rateDto.getRates().get(model.getDestinationCurrency().getEnumAbbreviation()));

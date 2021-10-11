@@ -1,4 +1,4 @@
-package br.com.jrafael.currencyconverter.persistence.repository;
+package br.com.jrafael.currencyconverter.domain;
 
 import br.com.jrafael.currencyconverter.persistence.model.CurrencyTransactionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
