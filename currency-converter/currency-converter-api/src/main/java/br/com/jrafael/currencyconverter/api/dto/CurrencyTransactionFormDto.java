@@ -17,13 +17,11 @@ import java.math.BigDecimal;
 public class CurrencyTransactionFormDto extends BaseDto<CurrencyTransaction> {
 
     private String userId;
-    private FinanceCoins currencyOrigin;
     private BigDecimal sourceValue;
     private FinanceCoins destinationCurrency;
 
     public CurrencyTransactionFormDto(CurrencyTransaction currencyTransaction) {
         this.userId = currencyTransaction.getUserId();
-        this.currencyOrigin = currencyTransaction.getCurrencyOrigin();
         this.sourceValue = currencyTransaction.getSourceValue();
         this.destinationCurrency = currencyTransaction.getDestinationCurrency();
     }
@@ -32,7 +30,6 @@ public class CurrencyTransactionFormDto extends BaseDto<CurrencyTransaction> {
     public CurrencyTransaction convert() {
         CurrencyTransaction obj = new CurrencyTransaction();
         obj.setUserId(this.userId);
-        obj.setCurrencyOrigin(this.currencyOrigin);
         obj.setDestinationCurrency(this.destinationCurrency);
         obj.setSourceValue(this.sourceValue);
         return obj;

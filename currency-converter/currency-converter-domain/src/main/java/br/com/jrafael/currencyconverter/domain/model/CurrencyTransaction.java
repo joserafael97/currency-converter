@@ -12,7 +12,7 @@ public class CurrencyTransaction {
 
     private String id;
     private String userId;
-    private FinanceCoins currencyOrigin;
+    private FinanceCoins currencyOrigin = FinanceCoins.EUR;
     private BigDecimal sourceValue;
     private BigDecimal convertedValue;
     private FinanceCoins destinationCurrency;
