@@ -1,10 +1,9 @@
 package br.com.jrafael.currencyconverter.domain.port.service;
 
-import br.com.jrafael.currencyconverter.domain.constants.FinanceCoins;
-
-import java.math.BigDecimal;
+import br.com.jrafael.currencyconverter.domain.dto.CurrencyTransactionRateDto;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface FinanceCurrencyConverterServicePort {
 
-    BigDecimal getCurrencyTransactionRate(FinanceCoins currencyOrigin, FinanceCoins destinationCurrency, String accessToken);
+    CurrencyTransactionRateDto getCurrencyTransactionRate(@PathVariable("base") String base, @PathVariable("coins") String[] coins, @PathVariable("access_key") String accessKey);
 }

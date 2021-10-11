@@ -34,6 +34,7 @@ public class CurrencyTransactionEntityRepositoryImpl implements CurrencyTransact
                 .currencyOrigin(domainModel.getCurrencyOrigin())
                 .destinationCurrency(domainModel.getDestinationCurrency())
                 .date(domainModel.getDate())
+                .conversionRate(domainModel.getConversionRate())
                 .userId(domainModel.getUserId())
                 .sourceValue(domainModel.getSourceValue())
                 .build();
@@ -46,6 +47,8 @@ public class CurrencyTransactionEntityRepositoryImpl implements CurrencyTransact
         obj.setDestinationCurrency(entity.getDestinationCurrency());
         obj.setDate(entity.getDate());
         obj.setSourceValue(entity.getSourceValue());
+        obj.setId(entity.getId());
+        obj.setConversionRate(entity.getConversionRate());
         return obj;
     }
 

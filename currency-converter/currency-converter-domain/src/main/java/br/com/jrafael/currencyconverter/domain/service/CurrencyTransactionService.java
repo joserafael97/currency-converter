@@ -1,12 +1,11 @@
 package br.com.jrafael.currencyconverter.domain.service;
 
+import br.com.jrafael.currencyconverter.domain.dto.CurrencyTransactionRateDto;
 import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.port.persistence.CurrencyTransactionPersistencePort;
 import br.com.jrafael.currencyconverter.domain.port.service.FinanceCurrencyConverterServicePort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.math.BigDecimal;
 
 public class CurrencyTransactionService {
 
@@ -20,13 +19,18 @@ public class CurrencyTransactionService {
     }
 
     public CurrencyTransaction create(CurrencyTransaction model){
-        //access api and save/return result
-        BigDecimal rate = this.financeCurrencyConverterServicePort.getCurrencyTransactionRate(
-                model.getCurrencyOrigin(),
-                model.getDestinationCurrency(),
-                model.getUserId());
-        //conversion;;;
-        model = this.currencyTransactionPersistencePort.create(model);
+        String[] coins = new String[]{model.getDestinationCurrency().getEnumAbbreviation()};
+        model.setUserId("b28899a2fb24d70952c5d8ee2aa2006e");
+        CurrencyTransactionRateDto rateDto = this.financeCurrencyConverterServicePort
+                .getCurrencyTransactionRate(
+                        "EUR",
+                        coins,
+                        model.getUserId());
+        model.setConversionRate(rateDto.getRates().get(model.getDestinationCurrency().getEnumAbbreviation()));
+        model.setDate(rateDto.getTimestamp());
+        if(model != null) {
+            model = this.currencyTransactionPersistencePort.create(model);
+        }
         return model;
     }
 

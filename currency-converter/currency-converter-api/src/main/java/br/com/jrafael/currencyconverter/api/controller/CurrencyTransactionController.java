@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@RestController("transactions")
+@RestController("/transactions")
 public class CurrencyTransactionController {
 
     protected static final String PAGE_NUMBER_PARAM = "page";
