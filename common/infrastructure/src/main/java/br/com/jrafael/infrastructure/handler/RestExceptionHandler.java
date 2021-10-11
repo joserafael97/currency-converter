@@ -1,6 +1,7 @@
 package br.com.jrafael.infrastructure.handler;
 
 import br.com.jrafael.infrastructure.exception.GenericBusinessException;
+import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,12 @@ public class RestExceptionHandler {
     @ResponseBody
     public ResponseEntity<String> handleDataIntegrityViolationException(HttpServletRequest req, DataIntegrityViolationException be) {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(be.getMessage(), HttpStatus.CONFLICT);
+        return responseEntity;
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<String> handleFeignStatusException(FeignException e, HttpServletResponse response) {
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(e.contentUTF8(), HttpStatus.resolve(e.status()));
         return responseEntity;
     }
 

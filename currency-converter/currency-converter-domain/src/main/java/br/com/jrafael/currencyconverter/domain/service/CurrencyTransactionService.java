@@ -27,7 +27,7 @@ public class CurrencyTransactionService {
                 .getCurrencyTransactionRate(
                         "EUR",
                         coins,
-                        model.getUserId());
+                        model.getUserId()).getBody();
         model.setConversionRate(rateDto.getRates().get(model.getDestinationCurrency().getEnumAbbreviation()));
         model.setDate(rateDto.getTimestamp());
         model = this.currencyTransactionPersistencePort.create(model);
