@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-//https://api.exchangerate.host/latest?base=USD&symbols=BRL
 @FeignClient(url = "http://api.exchangeratesapi.io/v1", name = "rates")
 public interface ExchangeRateApi extends FinanceCurrencyConverterServicePort {
 

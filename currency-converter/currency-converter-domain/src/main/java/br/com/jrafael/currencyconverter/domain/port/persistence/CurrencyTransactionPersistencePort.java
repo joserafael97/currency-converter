@@ -9,4 +9,7 @@ public interface CurrencyTransactionPersistencePort{
     CurrencyTransaction create(CurrencyTransaction model);
 
     Page<CurrencyTransaction> getAll(Pageable pageable);
+
+    Page<CurrencyTransaction> getByUserId(String idUserId, Pageable pageable);
+
 }

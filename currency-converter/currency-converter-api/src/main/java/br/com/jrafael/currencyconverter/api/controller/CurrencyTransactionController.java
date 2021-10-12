@@ -11,19 +11,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@RestController("/transactions")
+@Validated
+@RestController
+@RequestMapping(value = "/transactions")
 public class CurrencyTransactionController {
 
     protected static final String PAGE_NUMBER_PARAM = "page";
     protected static final String PAGE_SIZE_PARAM = "size";
+    protected static final Integer INIT_SIZE_PAGE = 10;
+    protected static final Integer INIT_NUMBER_PAGE = 0;
 
     private final CurrencyTransactionService currencyTransactionService;
 
@@ -39,9 +41,11 @@ public class CurrencyTransactionController {
         return ResponseEntity.ok(this.convert(entity));
     }
 
-    @GetMapping(params = { PAGE_NUMBER_PARAM, PAGE_SIZE_PARAM })
-    public Page<CurrencyTransactionDto> getPaginated(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 10) Pageable page) {
-        Page<CurrencyTransaction> entities = this.currencyTransactionService.getAll(page);
+    @GetMapping(value = "",params = { PAGE_NUMBER_PARAM, PAGE_SIZE_PARAM })
+    public Page<CurrencyTransactionDto> getAll(@Valid @RequestParam(value = "idUser", required = false) String idUser,
+                                               @PageableDefault(direction = Sort.Direction.DESC, page = this.INIT_NUMBER_PAGE, size = this.INIT_SIZE_PAGE)  Pageable page) {
+        Page<CurrencyTransaction> entities = idUser != null ? this.currencyTransactionService.getByIdUser(idUser, page):
+                this.currencyTransactionService.getAll(page);
         return entities.map(entity -> this.convert(entity));
     }
 

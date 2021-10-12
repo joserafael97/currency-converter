@@ -1,6 +1,5 @@
 package br.com.jrafael.currencyconverter.domain.constants;
 
-import br.com.jrafael.currencyconverter.domain.exception.BusinessException;
 import br.com.jrafael.currencyconverter.domain.exception.BusinessValidationException;
 
 public enum FinanceCoins {
