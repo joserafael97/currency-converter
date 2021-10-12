@@ -30,7 +30,7 @@ public class CurrencyTransactionEntityRepositoryImpl implements CurrencyTransact
     }
 
     @Override
-    public Page<CurrencyTransaction> getAllByUserId(String idUserId, Pageable pageable) {
+    public Page<CurrencyTransaction> getByUserId(String idUserId, Pageable pageable) {
         return this.repository
                 .findByUserId(idUserId, pageable)
                 .map(this::getCurrencyTransaction);

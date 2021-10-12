@@ -40,7 +40,7 @@ public class CurrencyTransactionService {
         return this.currencyTransactionPersistencePort.getAll(page);
     }
 
-    public Page<CurrencyTransaction> getAllByIdUser(String idUserId, Pageable pageable){
-        return this.currencyTransactionPersistencePort.getAllByUserId(idUserId, pageable);
+    public Page<CurrencyTransaction>  getByIdUser(String idUserId, Pageable pageable){
+        return this.currencyTransactionPersistencePort.getByUserId(idUserId, pageable);
     }
 }

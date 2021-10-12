@@ -10,6 +10,6 @@ public interface CurrencyTransactionPersistencePort{
 
     Page<CurrencyTransaction> getAll(Pageable pageable);
 
-    Page<CurrencyTransaction> getAllByUserId(String idUserId, Pageable pageable);
+    Page<CurrencyTransaction> getByUserId(String idUserId, Pageable pageable);
 
 }
