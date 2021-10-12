@@ -5,6 +5,7 @@ import br.com.jrafael.currencyconverter.api.dto.CurrencyTransactionFormDto;
 import br.com.jrafael.currencyconverter.domain.exception.BusinessException;
 import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.service.CurrencyTransactionService;
+import br.com.jrafael.infrastructure.controller.ControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,13 +20,8 @@ import javax.validation.Valid;
 
 @Validated
 @RestController
-@RequestMapping(value = "/transactions")
-public class CurrencyTransactionController {
-
-    protected static final String PAGE_NUMBER_PARAM = "page";
-    protected static final String PAGE_SIZE_PARAM = "size";
-    protected static final Integer INIT_SIZE_PAGE = 10;
-    protected static final Integer INIT_NUMBER_PAGE = 0;
+@RequestMapping(value = "/${api.version}/transactions")
+public class CurrencyTransactionController extends ControllerBase {
 
     private final CurrencyTransactionService currencyTransactionService;
 
@@ -43,7 +39,7 @@ public class CurrencyTransactionController {
 
     @GetMapping(value = "",params = { PAGE_NUMBER_PARAM, PAGE_SIZE_PARAM })
     public Page<CurrencyTransactionDto> getAll(@Valid @RequestParam(value = "idUser", required = false) String idUser,
-                                               @PageableDefault(direction = Sort.Direction.DESC, page = this.INIT_NUMBER_PAGE, size = this.INIT_SIZE_PAGE)  Pageable page) {
+                                               @PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 10)  Pageable page) {
         Page<CurrencyTransaction> entities = idUser != null ? this.currencyTransactionService.getByIdUser(idUser, page):
                 this.currencyTransactionService.getAll(page);
         return entities.map(entity -> this.convert(entity));
