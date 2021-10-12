@@ -11,7 +11,7 @@ public class SameOriginAndDestionationCurrencyValidate extends CurrencyTransacti
 
     @Override
     public void performValidation(CurrencyTransaction model) throws BusinessValidationException {
-        if(model.getCurrencyOrigin().equals(model.getDestinationCurrency())){
+        if(model.getCurrencyOrigin().equals(model.getCurrencyDestination())){
             throw new BusinessValidationException("DestinationCurrency and CurrencyOrigin cannot be the same.");
         }
     }

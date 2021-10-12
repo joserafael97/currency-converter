@@ -15,7 +15,7 @@ public class CurrencyTransaction {
     private FinanceCoins currencyOrigin = FinanceCoins.EUR;
     private BigDecimal sourceValue;
     private BigDecimal convertedValue;
-    private FinanceCoins destinationCurrency;
+    private FinanceCoins currencyDestination;
     private BigDecimal conversionRate;
     private LocalDateTime date;
 
@@ -43,12 +43,12 @@ public class CurrencyTransaction {
         this.sourceValue = sourceValue;
     }
 
-    public FinanceCoins getDestinationCurrency() {
-        return destinationCurrency;
+    public FinanceCoins getCurrencyDestination() {
+        return currencyDestination;
     }
 
-    public void setDestinationCurrency(FinanceCoins destinationCurrency) {
-        this.destinationCurrency = destinationCurrency;
+    public void setCurrencyDestination(FinanceCoins currencyDestination) {
+        this.currencyDestination = currencyDestination;
     }
 
     public LocalDateTime getDate() {
@@ -97,7 +97,7 @@ public class CurrencyTransaction {
                 ", currencyOrigin=" + currencyOrigin +
                 ", sourceValue=" + sourceValue +
                 ", convertedValue=" + convertedValue +
-                ", destinationCurrency=" + destinationCurrency +
+                ", destinationCurrency=" + currencyDestination +
                 ", conversionRate=" + conversionRate +
                 ", date=" + date +
                 '}';

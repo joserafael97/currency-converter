@@ -49,12 +49,12 @@ public class CurrencyTransactionServiceTest {
         MockitoAnnotations.initMocks(this);
         this.service = new CurrencyTransactionService(this.currencyTransactionPersistencePort, this.financeCurrencyConverterServicePort);
         currencyTransaction = new CurrencyTransaction();
-        currencyTransaction.setDestinationCurrency(FinanceCoins.JPY);
+        currencyTransaction.setCurrencyDestination(FinanceCoins.JPY);
         currencyTransaction.setSourceValue(new BigDecimal("10.4"));
         currencyTransaction.setUserId("12345");
 
         currencyTransactionSaved = new CurrencyTransaction();
-        currencyTransactionSaved.setDestinationCurrency(FinanceCoins.JPY);
+        currencyTransactionSaved.setCurrencyDestination(FinanceCoins.JPY);
         currencyTransactionSaved.setCurrencyOrigin(FinanceCoins.EUR);
         currencyTransactionSaved.setSourceValue(new BigDecimal("10"));
         currencyTransactionSaved.setUserId("12345");
@@ -65,7 +65,7 @@ public class CurrencyTransactionServiceTest {
         currencyTransactionRateDto.setDate(Timestamp.valueOf(currencyTransactionSaved.getDate()).toString());
         currencyTransactionRateDto.setTimestamp("1633973461");
         Map<String, BigDecimal> rates = new HashMap<>();
-        rates.put(currencyTransactionSaved.getDestinationCurrency().getEnumAbbreviation(), new BigDecimal(1));
+        rates.put(currencyTransactionSaved.getCurrencyDestination().getEnumAbbreviation(), new BigDecimal(1));
         currencyTransactionRateDto.setRates(rates);
         currencyTransactionRateDto.setBase(currencyTransactionSaved.getCurrencyOrigin().getEnumAbbreviation());
     }
@@ -74,7 +74,7 @@ public class CurrencyTransactionServiceTest {
     public void createTransactionTest() throws Exception {
         when(this.financeCurrencyConverterServicePort.getCurrencyTransactionRate(
                 this.currencyTransaction.getCurrencyOrigin().getEnumAbbreviation(),
-                new String[]{this.currencyTransactionSaved.getDestinationCurrency().getEnumAbbreviation()},
+                new String[]{this.currencyTransactionSaved.getCurrencyDestination().getEnumAbbreviation()},
                 this.currencyTransaction.getUserId())
         ).thenReturn(new ResponseEntity<>(this.currencyTransactionRateDto, HttpStatus.OK));
 

@@ -22,13 +22,13 @@ public class CurrencyTransactionService {
 
     public CurrencyTransaction create(CurrencyTransaction model) throws BusinessValidationException {
         CurrencyTransactionAtributesValidation.validate(model);
-        String[] coins = new String[]{model.getDestinationCurrency().getEnumAbbreviation()};
+        String[] coins = new String[]{model.getCurrencyDestination().getEnumAbbreviation()};
         CurrencyTransactionRateDto rateDto = this.financeCurrencyConverterServicePort
                 .getCurrencyTransactionRate(
                         model.getCurrencyOrigin().getEnumAbbreviation(),
                         coins,
                         model.getUserId()).getBody();
-        model.setConversionRate(rateDto.getRates().get(model.getDestinationCurrency().getEnumAbbreviation()));
+        model.setConversionRate(rateDto.getRates().get(model.getCurrencyDestination().getEnumAbbreviation()));
         model.setDate(rateDto.getTimestamp());
         model = this.currencyTransactionPersistencePort.create(model);
         return model;
