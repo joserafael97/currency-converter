@@ -79,7 +79,6 @@ public class RestExceptionHandler {
             message = message.length() == 0 ? error : message + " and " + error;
             validationError.addFieldError(fieldError.getField(), fieldError.getCode());
         }
-
         return new ResponseEntity<>(new CustomMessageError(HttpStatus.BAD_REQUEST.value(), message) , HttpStatus.BAD_REQUEST);
     }
 

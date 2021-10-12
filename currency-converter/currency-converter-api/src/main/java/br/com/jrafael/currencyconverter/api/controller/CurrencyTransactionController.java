@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.logging.Logger;
 
 @Validated
 @RestController
 @RequestMapping(value = "/${api.version}/transactions")
 public class CurrencyTransactionController extends ControllerBase {
+
+    protected final Logger LOGGER = Logger.getLogger(CurrencyTransactionController.class.getName());
 
     private final CurrencyTransactionService currencyTransactionService;
 
@@ -54,6 +57,7 @@ public class CurrencyTransactionController extends ControllerBase {
                 && (form.getUserId() == null || form.getUserId().length() < 1)
                 && (this.defaultExchangeratesapiKey != null && this.defaultExchangeratesapiKey.length() > 0)) {
             form.setUserId(this.defaultExchangeratesapiKey);
+            this.LOGGER.info("query for conversion rates using standard passkey.");
         }
     }
 

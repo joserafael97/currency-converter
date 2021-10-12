@@ -13,6 +13,7 @@ public class DestinationCurrencyValidate extends CurrencyTransactionValidate{
     @Override
     public void performValidation(CurrencyTransaction model) throws BusinessValidationException {
         if (model.getCurrencyOrigin() == null){
+            LOGGER.info("Validation fail: DestinationCurrency value is required.");
             throw new BusinessValidationException("DestinationCurrency value is required");
         }else{
             FinanceCoins.getByCode(model.getCurrencyOrigin().getEnumAbbreviation());
