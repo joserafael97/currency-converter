@@ -29,9 +29,6 @@ public class CurrencyTransactionController extends ControllerBase {
     @Value("${exchangeratesapi.key}")
     private String defaultExchangeratesapiKey;
 
-    protected static final String PAGE_NUMBER_PARAM = "page";
-    protected static final String PAGE_SIZE_PARAM = "size";
-
     @Autowired
     public CurrencyTransactionController(final CurrencyTransactionService currencyTransactionService) {
         this.currencyTransactionService = currencyTransactionService;
