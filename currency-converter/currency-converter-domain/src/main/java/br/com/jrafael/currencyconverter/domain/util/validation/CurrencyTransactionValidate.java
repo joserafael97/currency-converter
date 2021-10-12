@@ -5,7 +5,7 @@ import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 
 public abstract class CurrencyTransactionValidate {
 
-    CurrencyTransactionValidate currencyTransactionValidate;
+    protected CurrencyTransactionValidate currencyTransactionValidate;
 
     public CurrencyTransactionValidate(CurrencyTransactionValidate currencyTransactionValidate){
         this.currencyTransactionValidate = currencyTransactionValidate;

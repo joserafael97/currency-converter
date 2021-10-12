@@ -17,6 +17,8 @@ public class SourceValueValidate extends CurrencyTransactionValidate{
             int compare = model.getSourceValue().compareTo(BigDecimal.ZERO);
             if(compare <= 0){
                 throw new BusinessValidationException("SourceValue must be greater than zero.");
+            } else if (this.currencyTransactionValidate != null) {
+                this.currencyTransactionValidate.performValidation(model);
             }
         }else {
             throw new BusinessValidationException("SourceValue value is required");

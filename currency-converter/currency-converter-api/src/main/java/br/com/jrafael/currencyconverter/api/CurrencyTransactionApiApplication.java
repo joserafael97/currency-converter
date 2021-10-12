@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = {"br.com.jrafael.currencyconverter.persistence"})
 @ComponentScan(basePackages = {
         "br.com.jrafael.infrastructure",
+        "br.com.jrafael.currencyconverter.domain",
         "br.com.jrafael.currencyconverter.persistence",
         "br.com.jrafael.currencyconverter.api"
 })
