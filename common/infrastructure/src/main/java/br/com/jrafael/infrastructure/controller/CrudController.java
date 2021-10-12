@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 
 
-public abstract class CrudController<T, K extends BaseDto<T>, F extends BaseDto<T>, ID> {
+public abstract class CrudController<T, K extends BaseDto<T>, F extends BaseDto<T>, ID> extends ControllerBase{
 
     protected static final String PAGE_NUMBER_PARAM = "page";
     protected static final String PAGE_SIZE_PARAM = "size";
