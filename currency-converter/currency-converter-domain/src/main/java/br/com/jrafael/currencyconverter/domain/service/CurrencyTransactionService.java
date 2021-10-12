@@ -6,6 +6,7 @@ import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.port.persistence.CurrencyTransactionPersistencePort;
 import br.com.jrafael.currencyconverter.domain.port.service.FinanceCurrencyConverterServicePort;
 import br.com.jrafael.currencyconverter.domain.util.validation.init.CurrencyTransactionAtributesValidation;
+import br.com.jrafael.currencyconverter.domain.util.validation.init.RateCurrencyTransactionValidation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -28,6 +29,7 @@ public class CurrencyTransactionService {
                         model.getCurrencyOrigin().getEnumAbbreviation(),
                         coins,
                         model.getUserId()).getBody();
+        RateCurrencyTransactionValidation.validate(rateDto);
         model.setConversionRate(rateDto.getRates().get(model.getCurrencyDestination().getEnumAbbreviation()));
         model.setDate(rateDto.getTimestamp());
         model = this.currencyTransactionPersistencePort.create(model);
