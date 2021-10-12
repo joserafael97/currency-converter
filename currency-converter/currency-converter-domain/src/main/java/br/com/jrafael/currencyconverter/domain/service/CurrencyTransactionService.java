@@ -39,4 +39,8 @@ public class CurrencyTransactionService {
     public Page<CurrencyTransaction> getAll(Pageable page){
         return this.currencyTransactionPersistencePort.getAll(page);
     }
+
+    public Page<CurrencyTransaction> getAllByIdUser(String idUserId, Pageable pageable){
+        return this.currencyTransactionPersistencePort.getAllByUserId(idUserId, pageable);
+    }
 }

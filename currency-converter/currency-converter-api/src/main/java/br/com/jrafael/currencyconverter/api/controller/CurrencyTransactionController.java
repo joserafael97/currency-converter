@@ -40,7 +40,13 @@ public class CurrencyTransactionController {
     }
 
     @GetMapping(params = { PAGE_NUMBER_PARAM, PAGE_SIZE_PARAM })
-    public Page<CurrencyTransactionDto> getPaginated(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 10) Pageable page) {
+    public Page<CurrencyTransactionDto> getAll(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 10) Pageable page) {
+        Page<CurrencyTransaction> entities = this.currencyTransactionService.getAll(page);
+        return entities.map(entity -> this.convert(entity));
+    }
+
+    @GetMapping(params = { PAGE_NUMBER_PARAM, PAGE_SIZE_PARAM })
+    public Page<CurrencyTransactionDto> getAllByUserId(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 10) Pageable page) {
         Page<CurrencyTransaction> entities = this.currencyTransactionService.getAll(page);
         return entities.map(entity -> this.convert(entity));
     }

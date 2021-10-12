@@ -10,14 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Import(RepositoryTestConfiguration.class)
@@ -27,12 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CurrencyTransactionRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
     private CurrencyTransactionEntityRepository repository;
 
     private CurrencyTransactionEntity currencyTransactionEntity;
+    private CurrencyTransactionEntity currencyTransactionEntity2;
 
     @BeforeEach
     public void setUp() {
@@ -45,6 +44,17 @@ public class CurrencyTransactionRepositoryTest {
                 .sourceValue(new BigDecimal("9"))
                 .id("djfkejfkejfkejfkejkfjek")
                 .build();
+
+        this.currencyTransactionEntity2 = CurrencyTransactionEntity.builder()
+                .currencyOrigin(FinanceCoins.EUR)
+                .destinationCurrency(FinanceCoins.JPY)
+                .date(LocalDateTime.now())
+                .conversionRate(BigDecimal.ONE)
+                .userId("2849384938493894832dmsmdksjds")
+                .sourceValue(new BigDecimal("10"))
+                .id("djfkejfkejfkejfkejkfjek2")
+                .build();
+
     }
 
     @Test
@@ -52,9 +62,23 @@ public class CurrencyTransactionRepositoryTest {
         this.currencyTransactionEntity = this.repository.save(this.currencyTransactionEntity);
         Optional<CurrencyTransactionEntity> result = this.repository.findById(this.currencyTransactionEntity.getId());
         assertTrue(result.isPresent());
-        assertTrue(result.get().getCurrencyOrigin().equals(result.get().getCurrencyOrigin()));
-        assertTrue(result.get().getDestinationCurrency().equals(result.get().getDestinationCurrency()));
-        assertTrue(result.get().getSourceValue().equals(result.get().getSourceValue()));
+        assertEquals(result.get().getCurrencyOrigin(), result.get().getCurrencyOrigin());
+        assertEquals(result.get().getDestinationCurrency(), result.get().getDestinationCurrency());
+        assertEquals(result.get().getSourceValue(), result.get().getSourceValue());
+    }
+
+
+    @Test
+    public void getAllTest(){
+        this.currencyTransactionEntity = this.repository.save(this.currencyTransactionEntity);
+        this.currencyTransactionEntity2 = this.repository.save(this.currencyTransactionEntity2);
+        Optional<CurrencyTransactionEntity> result = this.repository.findById(currencyTransactionEntity.getId());
+        Optional<CurrencyTransactionEntity> result2 = this.repository.findById(currencyTransactionEntity2.getId());
+        assertTrue(result.isPresent());
+        assertTrue(result2.isPresent());
+        List<CurrencyTransactionEntity> entities = this.repository.findAll();
+        assertTrue(!entities.isEmpty());
+        assertTrue(entities.size() == 2);
     }
 
 }

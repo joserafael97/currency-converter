@@ -29,6 +29,13 @@ public class CurrencyTransactionEntityRepositoryImpl implements CurrencyTransact
                 .map(this::getCurrencyTransaction);
     }
 
+    @Override
+    public Page<CurrencyTransaction> getAllByUserId(String idUserId, Pageable pageable) {
+        return this.repository
+                .findByUserId(idUserId, pageable)
+                .map(this::getCurrencyTransaction);
+    }
+
     private CurrencyTransactionEntity getCurrencyTransactionEntity(CurrencyTransaction domainModel) {
         return CurrencyTransactionEntity.builder()
                 .currencyOrigin(domainModel.getCurrencyOrigin())
