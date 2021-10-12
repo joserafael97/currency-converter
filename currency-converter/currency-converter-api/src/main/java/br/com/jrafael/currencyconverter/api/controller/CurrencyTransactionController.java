@@ -29,6 +29,9 @@ public class CurrencyTransactionController extends ControllerBase {
     @Value("${exchangeratesapi.key}")
     private String defaultExchangeratesapiKey;
 
+    protected static final String PAGE_NUMBER_PARAM = "page";
+    protected static final String PAGE_SIZE_PARAM = "size";
+
     @Autowired
     public CurrencyTransactionController(final CurrencyTransactionService currencyTransactionService) {
         this.currencyTransactionService = currencyTransactionService;
@@ -42,9 +45,8 @@ public class CurrencyTransactionController extends ControllerBase {
         return ResponseEntity.ok(this.convert(entity));
     }
 
-    @GetMapping(value = "",params = { PAGE_NUMBER_PARAM, PAGE_SIZE_PARAM })
-    public Page<CurrencyTransactionDto> getAll(@Valid @RequestParam(value = "idUser", required = false) String idUser,
-                                               @PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 10)  Pageable page) {
+    @GetMapping
+    public Page<CurrencyTransactionDto> getAll(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 100) Pageable page, @Valid @RequestParam(value = "idUser", required = false) String idUser) {
         Page<CurrencyTransaction> entities = idUser != null ? this.currencyTransactionService.getByIdUser(idUser, page):
                 this.currencyTransactionService.getAll(page);
         return entities.map(entity -> this.convert(entity));

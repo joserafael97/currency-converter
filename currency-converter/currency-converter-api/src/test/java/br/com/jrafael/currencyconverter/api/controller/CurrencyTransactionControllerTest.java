@@ -12,18 +12,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +49,9 @@ public class CurrencyTransactionControllerTest {
 
     @MockBean
     private CurrencyTransactionService currencyTransactionService;
+
+    @Value("/${api.version}/transactions")
+    private String uri;
 
     private CurrencyTransactionFormDto dtoForm;
 
@@ -70,9 +81,22 @@ public class CurrencyTransactionControllerTest {
     @Test
     public void postTest() throws Exception {
         given(this.currencyTransactionService.create(ArgumentMatchers.any(CurrencyTransaction.class))).willReturn(this.dto.convert());
-        this.mockMvc.perform(post("/transactions")
+        this.mockMvc.perform(post(this.uri)
                 .content(this.objectMapper.writeValueAsString(this.dtoForm))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.id", is(this.dto.getId())));
+    }
+
+    @Test
+    public void getAllTransactionsTest() throws Exception {
+        List<CurrencyTransaction> transactions = new ArrayList<>();
+        transactions.add(this.dto.convert());
+        transactions.add(this.dto.convert());
+        Page<CurrencyTransaction> pagedResponse = new PageImpl<>(transactions);
+        given(this.currencyTransactionService.getAll(any(Pageable.class))).willReturn(pagedResponse);
+        this.mockMvc.perform(get(this.uri)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()", is(2)));
     }
 }
