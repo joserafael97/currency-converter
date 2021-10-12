@@ -11,11 +11,12 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,7 +51,7 @@ public class CurrencyTransactionRepositoryTest {
                 .destinationCurrency(FinanceCoins.JPY)
                 .date(LocalDateTime.now())
                 .conversionRate(BigDecimal.ONE)
-                .userId("2849384938493894832dmsmdksjds")
+                .userId("2849384938493894832dmsmdksjds2222")
                 .sourceValue(new BigDecimal("10"))
                 .id("djfkejfkejfkejfkejkfjek2")
                 .build();
@@ -76,9 +77,22 @@ public class CurrencyTransactionRepositoryTest {
         Optional<CurrencyTransactionEntity> result2 = this.repository.findById(currencyTransactionEntity2.getId());
         assertTrue(result.isPresent());
         assertTrue(result2.isPresent());
-        List<CurrencyTransactionEntity> entities = this.repository.findAll();
+        Page<CurrencyTransactionEntity> entities = this.repository.findAll(PageRequest.of(0, 10));
         assertTrue(!entities.isEmpty());
-        assertTrue(entities.size() == 2);
+        assertTrue(entities.getContent().size() == 2);
+    }
+
+    @Test
+    public void getByUserIdTest(){
+        this.currencyTransactionEntity = this.repository.save(this.currencyTransactionEntity);
+        this.currencyTransactionEntity2 = this.repository.save(this.currencyTransactionEntity2);
+        Optional<CurrencyTransactionEntity> result = this.repository.findById(currencyTransactionEntity.getId());
+        Optional<CurrencyTransactionEntity> result2 = this.repository.findById(currencyTransactionEntity2.getId());
+        assertTrue(result.isPresent());
+        assertTrue(result2.isPresent());
+        Page<CurrencyTransactionEntity> entities = this.repository.findByUserId("2849384938493894832dmsmdksjds2222",  PageRequest.of(0, 10));
+        assertTrue(!entities.isEmpty());
+        assertTrue(entities.getContent().size() == 1);
     }
 
 }
