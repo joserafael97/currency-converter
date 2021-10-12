@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 @Entity
-@Table(name = "CURRENCYTRANSACTION")
+@Table(name = "currency_transaction")
 @Data
 public class CurrencyTransactionEntity {
 
