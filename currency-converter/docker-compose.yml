@@ -24,6 +24,7 @@ services:
             - PORT=9999
             - SPRING_PROFILES_ACTIVE=prod
             - MEMORY_USE=
+            - EXCHANGE_RATE_ACCESS_KEY=
          dockerfile: ./Dockerfile
          context: ./currency-converter-api
       image: currency-converter

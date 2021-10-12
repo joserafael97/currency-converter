@@ -15,4 +15,5 @@ public interface ExchangeRateApi extends FinanceCurrencyConverterServicePort {
             @PathVariable("base") String base,
             @PathVariable("coins") String[] coins,
             @PathVariable("access_key") String accessKey);
+
 }

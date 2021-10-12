@@ -6,9 +6,6 @@ on:
   push:
     branches:
       - workflow-heroku
-  pull_request:
-    branches:
-      - workflow-heroku
 jobs:
   deploy-currency-converter:
     runs-on: ubuntu-latest

@@ -7,6 +7,7 @@ import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.service.CurrencyTransactionService;
 import br.com.jrafael.infrastructure.controller.ControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +26,9 @@ public class CurrencyTransactionController extends ControllerBase {
 
     private final CurrencyTransactionService currencyTransactionService;
 
+    @Value("${exchangeratesapi.key}")
+    private String defaultExchangeratesapiKey;
+
     @Autowired
     public CurrencyTransactionController(final CurrencyTransactionService currencyTransactionService) {
         this.currencyTransactionService = currencyTransactionService;
@@ -33,6 +37,7 @@ public class CurrencyTransactionController extends ControllerBase {
     @PostMapping
     @Transactional
     public ResponseEntity<CurrencyTransactionDto> post(@RequestBody @Valid CurrencyTransactionFormDto form) throws BusinessException {
+        this.setDefaultAccessKey(form);
         CurrencyTransaction entity = this.currencyTransactionService.create(form.convert());
         return ResponseEntity.ok(this.convert(entity));
     }
@@ -43,6 +48,14 @@ public class CurrencyTransactionController extends ControllerBase {
         Page<CurrencyTransaction> entities = idUser != null ? this.currencyTransactionService.getByIdUser(idUser, page):
                 this.currencyTransactionService.getAll(page);
         return entities.map(entity -> this.convert(entity));
+    }
+
+    private void setDefaultAccessKey(CurrencyTransactionFormDto form){
+        if (form != null
+                && (form.getUserId() == null || form.getUserId().length() < 1)
+                && (this.defaultExchangeratesapiKey != null && this.defaultExchangeratesapiKey.length() > 0)) {
+            form.setUserId(this.defaultExchangeratesapiKey);
+        }
     }
 
     private CurrencyTransactionDto convert(CurrencyTransaction entity) {
