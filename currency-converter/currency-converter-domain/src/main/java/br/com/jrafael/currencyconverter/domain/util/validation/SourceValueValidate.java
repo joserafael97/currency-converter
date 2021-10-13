@@ -18,8 +18,8 @@ public class SourceValueValidate extends CurrencyTransactionValidate{
             if(compare <= 0){
                 LOGGER.info("Validation fail: SourceValue must be greater than zero.");
                 throw new BusinessValidationException("SourceValue must be greater than zero.");
-            } else if (this.currencyTransactionValidate != null) {
-                this.currencyTransactionValidate.performValidation(model);
+            } else if (this.nextCurrencyTransactionValidate != null) {
+                this.nextCurrencyTransactionValidate.performValidation(model);
             }
         }else {
             LOGGER.info("Validation fail: SourceValue value is required.");

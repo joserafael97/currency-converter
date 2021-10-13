@@ -7,14 +7,14 @@ import br.com.jrafael.currencyconverter.domain.port.persistence.CurrencyTransact
 import br.com.jrafael.currencyconverter.domain.port.service.FinanceCurrencyConverterServicePort;
 import br.com.jrafael.currencyconverter.domain.util.validation.init.CurrencyTransactionAtributesValidation;
 import br.com.jrafael.currencyconverter.domain.util.validation.init.RateCurrencyTransactionValidation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.logging.Logger;
-
 public class CurrencyTransactionService {
 
-    protected final Logger LOGGER = Logger.getLogger(CurrencyTransactionService.class.getName());
+    protected final Logger LOGGER = LogManager.getLogger(CurrencyTransactionService.class);
 
     private final CurrencyTransactionPersistencePort currencyTransactionPersistencePort;
     private final FinanceCurrencyConverterServicePort financeCurrencyConverterServicePort;
@@ -26,34 +26,34 @@ public class CurrencyTransactionService {
     }
 
     public CurrencyTransaction create(CurrencyTransaction model) throws BusinessValidationException {
-        LOGGER.info("starting attribute validation to create currency transaction.");
+        LOGGER.trace("starting attribute validation to create currency transaction.");
         CurrencyTransactionAtributesValidation.validate(model);
-        LOGGER.info("Attribute validation for finished currency conversion.");
+        LOGGER.trace("Attribute validation for finished currency conversion.");
 
         String[] coins = new String[]{model.getCurrencyDestination().getEnumAbbreviation()};
-        LOGGER.info("Query conversion rate from"+ model.getCurrencyOrigin().getEnumAbbreviation()+ " to "+ model.getCurrencyDestination().getEnumAbbreviation());
+        LOGGER.info(String.format("Query conversion rate from%s to %s", model.getCurrencyOrigin().getEnumAbbreviation(), model.getCurrencyDestination().getEnumAbbreviation()));
         CurrencyTransactionRateDto rateDto = this.financeCurrencyConverterServicePort
                 .getCurrencyTransactionRate(
                         model.getCurrencyOrigin().getEnumAbbreviation(),
                         coins,
                         model.getUserId()).getBody();
-        LOGGER.info("starting rate validation");
+        LOGGER.trace("starting rate validation");
         RateCurrencyTransactionValidation.validate(rateDto);
-        LOGGER.info("rate validation finished");
+        LOGGER.trace("rate validation finished");
         model.setConversionRate(rateDto.getRates().get(model.getCurrencyDestination().getEnumAbbreviation()));
         model.setDate(rateDto.getTimestamp());
         model = this.currencyTransactionPersistencePort.create(model);
-        LOGGER.info("CurrencyTransaction saved in database: " + model);
+        LOGGER.trace(String.format("CurrencyTransaction saved in database: %s", model));
         return model;
     }
 
     public Page<CurrencyTransaction> getAll(Pageable page){
-        LOGGER.info("Query all CurrencyTransaction with page="+ page.getPageNumber() + " size="+ page.getPageSize() );
+        LOGGER.info(String.format("Query all CurrencyTransaction with page=%d size=%d", page.getPageNumber(), page.getPageSize()));
         return this.currencyTransactionPersistencePort.getAll(page);
     }
 
     public Page<CurrencyTransaction>  getByIdUser(String idUserId, Pageable page){
-        LOGGER.info("Query all CurrencyTransaction with page="+ page.getPageNumber() + " size="+ page.getPageSize() +" and idUserId=" + idUserId);
+        LOGGER.info(String.format("Query all CurrencyTransaction with page=%d size=%d and idUserId=%s", page.getPageNumber(), page.getPageSize(), idUserId));
         return this.currencyTransactionPersistencePort.getByUserId(idUserId, page);
     }
 }

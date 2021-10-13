@@ -5,6 +5,8 @@ import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +25,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(RestExceptionHandler.class.getName());
+    protected final Logger LOGGER = LogManager.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
                                                                    WebRequest request) {
-        String error = ex.getName() + " must be of the type " + ex.getRequiredType().getName();
-
+        String type = "Object";
+        if (ex.getRequiredType() != null) type = ex.getRequiredType().getName();
+        String error = new StringBuilder()
+                .append(ex.getName()).append(" must be of the type ")
+                .append(type).toString();
+        this.LOGGER.error(error);
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,9 +47,8 @@ public class RestExceptionHandler {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public ResponseEntity<String> handleBusinessErrors(HttpServletRequest req, GenericBusinessException be) {
-
         ResponseEntity<String> responseEntity = new ResponseEntity<>(be.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-
+        this.LOGGER.error(be.getMessage(), be);
         return responseEntity;
     }
 
@@ -54,12 +58,14 @@ public class RestExceptionHandler {
     @ResponseBody
     public ResponseEntity<String> handleDataIntegrityViolationException(HttpServletRequest req, DataIntegrityViolationException be) {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(be.getMessage(), HttpStatus.CONFLICT);
+        this.LOGGER.error(be.getMessage(), be);
         return responseEntity;
     }
 
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<String> handleFeignStatusException(FeignException e, HttpServletResponse response) {
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(e.contentUTF8(), HttpStatus.resolve(e.status()));
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(e.contentUTF8(), HttpStatus.resolve(e.status()) != null ? HttpStatus.resolve(e.status()) : HttpStatus.BAD_REQUEST);
+        this.LOGGER.error(e.getMessage(), e);
         return responseEntity;
     }
 
@@ -79,6 +85,7 @@ public class RestExceptionHandler {
             message = message.length() == 0 ? error : message + " and " + error;
             validationError.addFieldError(fieldError.getField(), fieldError.getCode());
         }
+        this.LOGGER.error(message);
         return new ResponseEntity<>(new CustomMessageError(HttpStatus.BAD_REQUEST.value(), message) , HttpStatus.BAD_REQUEST);
     }
 

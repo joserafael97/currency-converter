@@ -15,8 +15,8 @@ public class IdUserValidate extends CurrencyTransactionValidate{
             LOGGER.info("Validation fail: UserId value is required.");
             throw new BusinessValidationException("UserId value is required");
         }else {
-            if (this.currencyTransactionValidate != null) {
-                this.currencyTransactionValidate.performValidation(model);
+            if (this.nextCurrencyTransactionValidate != null) {
+                this.nextCurrencyTransactionValidate.performValidation(model);
             }
         }
     }

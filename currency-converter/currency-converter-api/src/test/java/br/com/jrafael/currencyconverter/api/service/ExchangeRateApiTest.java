@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -23,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = CurrencyTransactionApiApplication.class)
 @AutoConfigureMockMvc
-public class ExchangeRateApiTest {
+class ExchangeRateApiTest {
 
     @Autowired
     private ExchangeRateApi exchangeRateApi;
@@ -37,26 +39,27 @@ public class ExchangeRateApiTest {
     }
 
     @Test
-    public void getRatesWithBaseEurTest() throws Exception {
+    void getRatesWithBaseEurTest() throws Exception {
         ResponseEntity<CurrencyTransactionRateDto> result=  this.exchangeRateApi
                 .getCurrencyTransactionRate(FinanceCoins.EUR.getEnumAbbreviation(),
                         new String[]{FinanceCoins.BRL.getEnumAbbreviation()},
                         this.defaultExchangeratesapiKey);
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals(FinanceCoins.EUR.getEnumAbbreviation(), result.getBody().getBase());
-        assertTrue(result.getBody().getRates().size() == 1);
+        assertEquals(FinanceCoins.EUR.getEnumAbbreviation(), Objects.requireNonNull(result.getBody()).getBase());
+        assertEquals(1, result.getBody().getRates().size());
     }
 
     @Test
-    public void getRatesWitInvalidAccessKeyTest() throws Exception {
-        assertThrows(FeignException.class, () -> this.exchangeRateApi
-                .getCurrencyTransactionRate(FinanceCoins.EUR.getEnumAbbreviation(),
-                        new String[]{FinanceCoins.BRL.getEnumAbbreviation()},
-                        "testeinvalidacess"));
+    void getRatesWitInvalidAccessKeyTest() throws Exception {
+        assertThrows(FeignException.class,
+                () -> this.exchangeRateApi
+                        .getCurrencyTransactionRate(FinanceCoins.EUR.getEnumAbbreviation(),
+                                new String[]{FinanceCoins.BRL.getEnumAbbreviation()},
+                                "testeinvalidacess"));
     }
 
     @Test
-    public void getRatesWitInvalidBaseTest() throws Exception {
+    void getRatesWitInvalidBaseTest() throws Exception {
         assertThrows(FeignException.class, () -> this.exchangeRateApi
                 .getCurrencyTransactionRate(FinanceCoins.JPY.getEnumAbbreviation(),
                         new String[]{FinanceCoins.BRL.getEnumAbbreviation()},

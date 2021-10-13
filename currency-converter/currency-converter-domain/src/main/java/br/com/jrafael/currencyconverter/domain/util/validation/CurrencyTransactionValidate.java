@@ -2,18 +2,17 @@ package br.com.jrafael.currencyconverter.domain.util.validation;
 
 import br.com.jrafael.currencyconverter.domain.exception.BusinessValidationException;
 import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
-
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class CurrencyTransactionValidate {
 
-    protected final Logger LOGGER = Logger.getLogger(this.getClass().getName());
+    protected final Logger LOGGER = LogManager.getLogger(CurrencyTransactionValidate.class);
 
+    protected CurrencyTransactionValidate nextCurrencyTransactionValidate;
 
-    protected CurrencyTransactionValidate currencyTransactionValidate;
-
-    public CurrencyTransactionValidate(CurrencyTransactionValidate currencyTransactionValidate){
-        this.currencyTransactionValidate = currencyTransactionValidate;
+    protected CurrencyTransactionValidate(CurrencyTransactionValidate nextCurrencyTransactionValidate){
+        this.nextCurrencyTransactionValidate = nextCurrencyTransactionValidate;
     }
 
     public abstract void performValidation(CurrencyTransaction model) throws BusinessValidationException;
@@ -21,8 +20,8 @@ public abstract class CurrencyTransactionValidate {
     public void validate(CurrencyTransaction model) throws BusinessValidationException {
         if (model != null) {
             performValidation(model);
-            if (this.currencyTransactionValidate != null) {
-                this.currencyTransactionValidate.performValidation(model);
+            if (this.nextCurrencyTransactionValidate != null) {
+                this.nextCurrencyTransactionValidate.performValidation(model);
             }
         }else {
             LOGGER.info("Validation fail: Information provided is invalid or incomplete.");

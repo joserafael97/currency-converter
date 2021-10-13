@@ -2,8 +2,8 @@ package br.com.jrafael.currencyconverter.persistence.adapter;
 
 import br.com.jrafael.currencyconverter.domain.model.CurrencyTransaction;
 import br.com.jrafael.currencyconverter.domain.port.persistence.CurrencyTransactionPersistencePort;
-import br.com.jrafael.currencyconverter.persistence.repository.CurrencyTransactionEntityRepository;
 import br.com.jrafael.currencyconverter.persistence.model.CurrencyTransactionEntity;
+import br.com.jrafael.currencyconverter.persistence.repository.CurrencyTransactionEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

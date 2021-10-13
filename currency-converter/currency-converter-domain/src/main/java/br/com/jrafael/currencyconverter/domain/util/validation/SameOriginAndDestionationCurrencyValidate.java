@@ -14,8 +14,8 @@ public class SameOriginAndDestionationCurrencyValidate extends CurrencyTransacti
         if (model.getCurrencyOrigin().equals(model.getCurrencyDestination())) {
             LOGGER.info("Validation fail: DestinationCurrency and CurrencyOrigin cannot be the same.");
             throw new BusinessValidationException("DestinationCurrency and CurrencyOrigin cannot be the same.");
-        } else if (this.currencyTransactionValidate != null) {
-            this.currencyTransactionValidate.performValidation(model);
+        } else if (this.nextCurrencyTransactionValidate != null) {
+            this.nextCurrencyTransactionValidate.performValidation(model);
         }
     }
 }

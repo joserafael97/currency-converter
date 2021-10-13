@@ -17,8 +17,8 @@ public class CurrencyOriginValidate extends CurrencyTransactionValidate {
             throw new BusinessValidationException("currencyOrigin value is required");
         }else{
             FinanceCoins.getByCode(model.getCurrencyOrigin().getEnumAbbreviation().toString());
-            if (this.currencyTransactionValidate != null) {
-                this.currencyTransactionValidate.performValidation(model);
+            if (this.nextCurrencyTransactionValidate != null) {
+                this.nextCurrencyTransactionValidate.performValidation(model);
             }
         }
     }
