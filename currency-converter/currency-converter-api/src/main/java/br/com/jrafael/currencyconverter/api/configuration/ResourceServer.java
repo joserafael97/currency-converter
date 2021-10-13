@@ -16,16 +16,17 @@ public class ResourceServer extends WebSecurityConfigurerAdapter {
         http.cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
                 //======================= SWAGGER ==============================//
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().headers().frameOptions().disable();
 
     }
 
+    @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(new String[]{"/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v3/api-docs/**", "/swagger-ui/**"});
     }
