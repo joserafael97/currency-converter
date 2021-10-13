@@ -15,14 +15,15 @@ O principal objetivo da Aplicação é converter um valor monetário de um moeda
 ## Motivação tecnológica
 O projeto foi construído em JAVA versão 8 devido a familiaridade do desenvovedor nesta tecnologia.
 
-O Framework Spring e todo seu ecosistema como tecnologia de desenvolvimento foi devido a facilidade na criação de APIs REST e a um conhecimento prêvio do desenvolvedor neste ambiente.
+O Framework Spring e todo seu ecosistema como tecnologia de desenvolvimento foi escolhido devido a facilidade na criação de APIs REST e a um conhecimento prêvio do desenvolvedor neste ambiente.
 
 ## Possíveis Melhorias
 
 * Adição de autenticação via Spring Security via Token (JWT ou outra forma), restrigindo end-points para listagem e criação de transações (Conversões monetárias). Inserção de uma camada de usuário a qual restringe a visualização de conversões próprias.
 * Troca de Api de acesso a taxas de conversão para permitir outras bases de conversões.
 * Revisar nomeclaturas usadas no domínio da aplicação.
-* Não retornar Id User (Key access api taxas de conversão), pois não faz muito sentido o usuário saber essa informação.   
+* Não retornar Id User (Key access api taxas de conversão), pois não faz muito sentido o usuário saber essa informação.
+* Melhoria padrões e criação de mecanismo de armazenamento de logs
 
 ## Módulos do Projeto
 
