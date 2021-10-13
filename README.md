@@ -5,7 +5,7 @@ Este projeto está disponível no [https://currency-converter-app01.herokuapp.co
 O Deploy foi feito via Github Actions [deploy-heroku.yml](https://github.com/joserafael97/currency-converter/blob/workflow-heroku/.github/workflows/deploy-heroku.yml) com base na branch [workflow-heroku](https://github.com/joserafael97/currency-converter/tree/workflow-heroku)
 
 ## propósito
-O principal o objetivo da Aplicação é converter um valor monetário de um moeda para outra.
+O principal objetivo da Aplicação é converter um valor monetário de um moeda para outra.
 
 **Obs:** Por uma limitação a conversão é feita das moedas BRL, USD, JPY para EUR.
 
