@@ -5,25 +5,36 @@ Este projeto está disponível no [https://currency-converter-app01.herokuapp.co
 O Deploy foi feito via Github Actions [deploy-heroku.yml](https://github.com/joserafael97/currency-converter/blob/workflow-heroku/.github/workflows/deploy-heroku.yml) com base na branch [workflow-heroku](https://github.com/joserafael97/currency-converter/tree/workflow-heroku)
 
 ## propósito
-O principal objetivo da Aplicação é converter um valor monetário de um moeda para outra.
+O principal objetivo da Aplicação é converter um valor monetário de uma moeda para outra.
 
 **Obs:** Por uma limitação a conversão é feita das moedas BRL, USD, JPY para EUR.
 
 ## features
 * Conversão de valores das  BRL, USD, JPY para EUR.
 
-## Motivação tecnológica
-O projeto foi construído em JAVA versão 8 devido a familiaridade do desenvovedor nesta tecnologia.
+A api disponibiliza dois endpoints: 
 
-O Framework Spring e todo seu ecosistema como tecnologia de desenvolvimento foi escolhido devido a facilidade na criação de APIs REST e a um conhecimento prêvio do desenvolvedor neste ambiente.
+* Criação de transação de conversão entre moedas
+    POST /versãoApi/transactions 
+  **obs:** Caso deseje não utilizar uma key_access (id Usuário) próprio você pode deixar em branco que este será substituído por um valor padrão.
+* Listagem dessas transações
+    GET /versãoApi/transactions
+
+Para mais informações consulte a documentação via Swagger na **/swagger-ui/**.
+
+## Motivação tecnológica
+O projeto foi construído em JAVA versão 8 devido a familiaridade do desenvolvedor nesta tecnologia.
+
+O Framework Spring e todo seu ecossistema como tecnologia de desenvolvimento foi escolhido devido a facilidade na criação de APIs REST e a um conhecimento prévio do desenvolvedor neste ambiente.
 
 ## Possíveis Melhorias
 
-* Adição de autenticação via Spring Security via Token (JWT ou outra forma), restrigindo end-points para listagem e criação de transações (Conversões monetárias). Inserção de uma camada de usuário a qual restringe a visualização de conversões próprias.
+* Adição de autenticação via Spring Security via Token (JWT ou outra forma), restringindo endpoints para listagem e criação de transações (Conversões monetárias). Inserção de uma camada de usuário a qual restringe a visualização de conversões próprias.
 * Troca de Api de acesso a taxas de conversão para permitir outras bases de conversões.
-* Revisar nomeclaturas usadas no domínio da aplicação.
+* Revisar nomenclaturas usadas no domínio da aplicação.
 * Não retornar Id User (Key access api taxas de conversão), pois não faz muito sentido o usuário saber essa informação.
 * Melhoria padrões e criação de mecanismo de armazenamento de logs
+* Melhoria do CI com execução de testes antes de qualquer etapa.
 
 ## Módulos do Projeto
 
@@ -42,10 +53,9 @@ Módulo com utilitários para adicionar camada segurança eme aplicações com o
 Módulo principal do projeto com todas regras as negócio para o conversor de moedas.
 
 ### 2.1 Currency-converter-domain
-Módulo contendo as regras de negócios. Neste módulo foi isolado a parte de libs e infra da regras para conversão de moedas.
+Módulo contendo as regras de negócios. Neste módulo foi isolado a parte de libs e infra das regras para conversão de moedas.
 
-Ele apresenta o conceito de arquitetura clean code e hexagonal, considerando a ideia de inversão de dependência, onde os demais módulos devem podem depender do domain mas não o inverso. 
-
+Ele apresenta o conceito de arquitetura clean code e hexagonal, considerando a ideia de inversão de dependência, onde os demais módulos devem depender do domínio mas não o inverso.
 ### 2.2 Currency-converter-persistence
 Módulo contendo infraestrutura para acesso e gerenciamento da persistência.
 
@@ -85,7 +95,7 @@ ou via Maven:
 mvn spring-boot:run -Drun.profiles=<<perfil>>
 ```
 
-Onde o perfil deve ser um dos três mencionados no começo dessa seção. É importante frisar, que caso o parâmetro -Dspring.profiles.active seja informado, o perfil padrão executado será o dev.
+Onde o perfil deve ser um dos três mencionados no começo desta seção. É importante frisar, que caso o parâmetro -Dspring.profiles.active seja informado, o perfil padrão executado será o dev.
 
 ### O perfil de execução dev
 O perfil dev por padrão acessa o banco de dados utilizando a seguinte configuração:
@@ -122,7 +132,7 @@ Com docker em execução dentro do diretório no módulo principal contendo **do
 docker-compose up --build
 ```
 
-O enderenço local da aplicação disponível será: 
+O endereço local da aplicação disponível será: 
 
 ```
 http://localhost:9999
