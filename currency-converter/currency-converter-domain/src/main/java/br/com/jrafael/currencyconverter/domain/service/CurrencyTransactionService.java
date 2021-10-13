@@ -31,7 +31,7 @@ public class CurrencyTransactionService {
         LOGGER.trace("Attribute validation for finished currency conversion.");
 
         String[] coins = new String[]{model.getCurrencyDestination().getEnumAbbreviation()};
-        LOGGER.info(String.format("Query conversion rate from%s to %s", model.getCurrencyOrigin().getEnumAbbreviation(), model.getCurrencyDestination().getEnumAbbreviation()));
+        LOGGER.info(String.format("Query conversion rate from %s to %s", model.getCurrencyOrigin().getEnumAbbreviation(), model.getCurrencyDestination().getEnumAbbreviation()));
         CurrencyTransactionRateDto rateDto = this.financeCurrencyConverterServicePort
                 .getCurrencyTransactionRate(
                         model.getCurrencyOrigin().getEnumAbbreviation(),
