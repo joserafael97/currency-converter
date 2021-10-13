@@ -36,6 +36,7 @@ services:
          - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-currency-converter:5441/currencyconverter
          - WAIT_HOSTS=postgres-currency-converter:5441
          - SPRING_PROFILES_ACTIVE=prod
+         - EXCHANGE_RATE_ACCESS_KEY=
          - PORT=9999
       ports:
          - "9999:9999"
