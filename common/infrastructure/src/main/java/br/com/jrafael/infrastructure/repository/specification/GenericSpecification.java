@@ -31,12 +31,16 @@ public class GenericSpecification<T> implements Specification<T> {
         switch (searchCriteria.getSearchOperation()) {
             case EQUALITY:
                 return criteriaBuilder.equal(root.get(searchCriteria.getKey()), arg);
+            case NEGATION:
+                break;
             case GREATER_THAN:
                 return criteriaBuilder.greaterThan(root.get(searchCriteria.getKey()), (Comparable) arg);
             case LESS_THAN:
                 return criteriaBuilder.lessThan(root.get(searchCriteria.getKey()), (Comparable) arg);
             case LIKE:
                 return criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.getKey())),  "%"+((String) arg).toLowerCase()+"%");
+            case STARTS_WITH:
+                break;
             case IN:
                 return root.get(searchCriteria.getKey()).in(arguments);
         }

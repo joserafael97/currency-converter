@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = CurrencyTransactionApiApplication.class)
 @AutoConfigureMockMvc
-public class CurrencyTransactionControllerTest {
+class CurrencyTransactionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -92,7 +92,7 @@ public class CurrencyTransactionControllerTest {
     }
 
     @Test
-    public void postTest() throws Exception {
+    void postTest() throws Exception {
         given(this.currencyTransactionService.create(ArgumentMatchers.any(CurrencyTransaction.class))).willReturn(this.dto.convert());
         this.mockMvc.perform(post(this.uri)
                 .content(this.objectMapper.writeValueAsString(this.dtoForm))
@@ -101,7 +101,7 @@ public class CurrencyTransactionControllerTest {
     }
 
     @Test
-    public void postWithoutIdUserTest() throws Exception {
+    void postWithoutIdUserTest() throws Exception {
         given(this.currencyTransactionService.create(ArgumentMatchers.any(CurrencyTransaction.class))).willReturn(this.dto.convert());
         this.dtoForm.setUserId("");
         this.mockMvc.perform(post(this.uri)
@@ -111,7 +111,7 @@ public class CurrencyTransactionControllerTest {
     }
 
     @Test
-    public void postWithNoRequiredFieldsTest() throws Exception {
+    void postWithNoRequiredFieldsTest() throws Exception {
         given(this.currencyTransactionService.create(ArgumentMatchers.any(CurrencyTransaction.class))).willReturn(this.dto.convert());
         this.dtoForm.setSourceValue(null);
         this.mockMvc.perform(post(this.uri)
@@ -132,7 +132,7 @@ public class CurrencyTransactionControllerTest {
     }
 
     @Test
-    public void postWithZeroAndNegativeSourceValueTest() throws Exception {
+    void postWithZeroAndNegativeSourceValueTest() throws Exception {
         given(this.currencyTransactionService.create(ArgumentMatchers.any(CurrencyTransaction.class))).willReturn(this.dto.convert());
         this.dtoForm.setSourceValue(BigDecimal.ZERO);
         this.mockMvc.perform(post(this.uri)
@@ -154,7 +154,7 @@ public class CurrencyTransactionControllerTest {
     }
 
     @Test
-    public void getAllTransactionsTest() throws Exception {
+    void getAllTransactionsTest() throws Exception {
         List<CurrencyTransaction> transactions = new ArrayList<>();
         transactions.add(this.dto.convert());
         transactions.add(this.dto.convert());
@@ -167,7 +167,7 @@ public class CurrencyTransactionControllerTest {
     }
 
     @Test
-    public void getAllTransactionsByIdUserTest() throws Exception {
+    void getAllTransactionsByIdUserTest() throws Exception {
         List<CurrencyTransaction> transactions = new ArrayList<>();
         transactions.add(this.dto2.convert());
         Page<CurrencyTransaction> pagedResponse = new PageImpl<>(transactions);

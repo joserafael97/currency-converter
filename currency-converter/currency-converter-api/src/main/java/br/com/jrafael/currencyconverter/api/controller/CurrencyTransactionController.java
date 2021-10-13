@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.logging.Logger;
 
 @Validated
 @RestController
 @RequestMapping(value = "/${api.version}/transactions")
 public class CurrencyTransactionController extends ControllerBase {
+
+    private final Logger logger = Logger.getLogger(CurrencyTransactionController.class.getName());
 
     private final CurrencyTransactionService currencyTransactionService;
 
@@ -43,10 +46,10 @@ public class CurrencyTransactionController extends ControllerBase {
     }
 
     @GetMapping
-    public Page<CurrencyTransactionDto> getAll(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 100) Pageable page, @Valid @RequestParam(value = "idUser", required = false) String idUser) {
-        Page<CurrencyTransaction> entities = idUser != null ? this.currencyTransactionService.getByIdUser(idUser, page):
-                this.currencyTransactionService.getAll(page);
-        return entities.map(entity -> this.convert(entity));
+    public Page<CurrencyTransactionDto> getAll(@PageableDefault(direction = Sort.Direction.DESC, page = 0, size = 100) Pageable pageable, @Valid @RequestParam(value = "idUser", required = false) String idUser) {
+        Page<CurrencyTransaction> entities = idUser != null ? this.currencyTransactionService.getByIdUser(idUser, pageable):
+                this.currencyTransactionService.getAll(pageable);
+        return entities.map(this::convert);
     }
 
     private void setDefaultAccessKey(CurrencyTransactionFormDto form){
@@ -54,6 +57,7 @@ public class CurrencyTransactionController extends ControllerBase {
                 && (form.getUserId() == null || form.getUserId().length() < 1)
                 && (this.defaultExchangeratesapiKey != null && this.defaultExchangeratesapiKey.length() > 0)) {
             form.setUserId(this.defaultExchangeratesapiKey);
+            this.logger.info("query for conversion rates using standard passkey.");
         }
     }
 
